@@ -1,12 +1,12 @@
-import express, { Request, Response, Application } from 'express';
+import 'dotenv/config';
+import express, { Application } from 'express';
+import EventProcessor from './helper/EventProcessor.class';
+import railEvents from './events/rail.events';
 
 const app: Application = express();
-
 const PORT = process.env.PORT || 5555;
 
-app.get('/', (req: Request, res: Response): void => {
-  res.send('WMATA metro times!');
-});
+const railEventProcessor = new EventProcessor(railEvents);
 
 app.listen(PORT, (): void => {
   console.log(`Server Running here 👉 https://localhost:${PORT}`);
