@@ -1,4 +1,3 @@
-import { AxiosResponse } from 'axios';
 import EventEmitter from 'events';
 import { Event } from '../types/event.types';
 
@@ -9,25 +8,23 @@ type Error = {
 
 class EventProcessor extends EventEmitter {
   private events: Event[];
-  private MAX_EVENT_LISTENERS = 3;
 
   constructor(events: Event[]) {
     super();
     this.events = events;
-    this.setMaxListeners(this.MAX_EVENT_LISTENERS);
 
     this.setupEventReceivers = this.setupEventReceivers.bind(this);
     this.processEvent = this.processEvent.bind(this);
 
-    this.setupEventReceivers();
     this.processEvents();
   }
 
-  private processEvents() {
+  private processEvents(): void {
+    this.setupEventReceivers();
     this.events.forEach(this.processEvent);
   }
 
-  private processEvent(event: Event) {
+  private processEvent(event: Event): void {
     event
       .action()
       .then((data: any) => {
@@ -37,11 +34,13 @@ class EventProcessor extends EventEmitter {
       .catch((err) => this.emit('error', { event, err }));
   }
 
-  private setupEventReceivers() {
+  private setupEventReceivers(): void {
+    this.setMaxListeners(this.events.length + 1);
+
     this.events.forEach((event) => {
       this.on(event.name, (data: any) => {
         // TODO: socket.io event
-        console.log(data);
+        // console.log(data);
       });
     });
 
@@ -50,20 +49,24 @@ class EventProcessor extends EventEmitter {
     });
   }
 
-  setEvents(events: Event[]) {
+  setEvents(events: Event[]): void {
     this.events = events;
     this.restart();
   }
 
-  start() {
+  getEvents(): Event[] {
+    return this.events;
+  }
+
+  start(): void {
     if (this.eventNames().length === 0) this.processEvents();
   }
 
-  stop() {
+  stop(): void {
     this.removeAllListeners();
   }
 
-  restart() {
+  restart(): void {
     this.removeAllListeners();
     this.processEvents();
   }
