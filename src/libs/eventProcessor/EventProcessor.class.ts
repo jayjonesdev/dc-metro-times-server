@@ -6,9 +6,16 @@ type Error = {
   err: any;
 };
 
+/**
+ * @Class
+ * Event Processor is used to process user-defined events and emit socket-io events.
+ */
 class EventProcessor extends EventEmitter {
   private events: Event[];
 
+  /**
+   * @param {Event[]} events User-defined events
+   */
   constructor(events: Event[]) {
     super();
     this.events = events;

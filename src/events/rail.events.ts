@@ -4,7 +4,7 @@ import {
 } from '../actions/rail';
 import { Event } from '../types/event.types';
 
-/*
+/**
  * WMATA allows 50k API calls per day and 10 calls per second.
  * Calls per day for each event.
  * realtime: 28,800
