@@ -1,7 +1,7 @@
 import { Event } from '../types/event.types';
 import EventProcessor from './EventProcessor.class';
 
-describe('EventEmitter', () => {
+describe('EventProcessor', () => {
   let events: Event[] = [];
   let bool = false;
   const eventProcessor = new EventProcessor(events);
