@@ -5,7 +5,7 @@ const fetchRealTimeRailPredictions = (): Promise<
   AxiosResponse<RailPredictionResponse>
 > =>
   axios
-    .get('https://api.wmata.com/StationPrediction.svc/json/GetPrediction/ALL', {
+    .get(`${process.env.WMATA_API_HOST}StationPrediction.svc/json/GetPrediction/ALL`, {
       headers: {
         api_key: process.env.WMATA_API_KEY as string,
       },

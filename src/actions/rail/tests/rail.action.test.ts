@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { fetchRailIncidents, fetchRealTimeRailPredictions } from './';
+import { fetchRailIncidents, fetchRealTimeRailPredictions } from '..';
 import {
   mockedRailIncidentResponse,
   mockedRealTimeRailPredictionsResponse,
-} from './tests/mockData';
+} from './mockData';
 
 jest.mock('axios');
 
