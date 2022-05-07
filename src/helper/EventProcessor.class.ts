@@ -30,8 +30,8 @@ class EventProcessor extends EventEmitter {
   private processEvent(event: Event) {
     event
       .action()
-      .then((res: AxiosResponse) => {
-        this.emit(event.name, res.data);
+      .then((data: any) => {
+        this.emit(event.name, data);
         setTimeout(() => this.processEvent(event), event.interval);
       })
       .catch((err) => this.emit('error', { event, err }));
