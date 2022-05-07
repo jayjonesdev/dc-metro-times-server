@@ -1,5 +1,5 @@
 import EventEmitter from 'events';
-import { Event } from '../types/event.types';
+import { Event } from '../../types/event.types';
 
 type Error = {
   event: Event;

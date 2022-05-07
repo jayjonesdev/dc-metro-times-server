@@ -1,4 +1,4 @@
-import { Event } from '../types/event.types';
+import { Event } from '../../types/event.types';
 import EventProcessor from './EventProcessor.class';
 
 describe('EventProcessor', () => {
