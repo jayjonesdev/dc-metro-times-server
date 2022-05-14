@@ -1,3 +1,6 @@
+import { createServer, Server as HttpServer } from 'http';
+import { Server, Socket } from 'socket.io';
+import { io } from 'socket.io-client';
 import { Event } from '../../types/event.types';
 import EventProcessor from './EventProcessor.class';
 
@@ -5,11 +8,48 @@ describe('EventProcessor', () => {
   let events: Event[] = [];
   let bool = false;
   const eventProcessor = new EventProcessor(events);
+  // let ioServer: Server, serverSocket: Socket, httpServer: HttpServer;
+
+  // beforeAll((done) => {
+  //   httpServer = createServer();
+  //   ioServer = new Server(httpServer);
+  //   httpServer.listen(5555);
+  //   console.log(httpServer.address())
+  //   ioServer.on('connection', (socket) => {
+  //     console.log(socket);
+  //   });
+  //   done();
+  // });
+
+  // beforeEach((done) => {
+  //   const client = io('http://localhost:5555');
+  //   client.on('connect', () => {
+  //     console.log('connected');
+  //   });
+  //   done();
+  // });
+
+  // afterAll((done) => {
+  //   ioServer.close();
+  //   httpServer.close();
+  //   done();
+  // });
 
   afterEach(() => {
     eventProcessor.stop();
     bool = false;
   });
+
+  // it('has no socket attached', () => {
+  //   expect(eventProcessor.getSocket()).not.toBeUndefined;
+  // });
+
+  // it('has an attached socket', () => {
+  //   eventProcessor.setSocket(serverSocket);
+  //   const socket = eventProcessor.getSocket();
+  //   console.log('serverSocket', socket)
+  //   expect(socket).toBeUndefined;
+  // });
 
   it('has a max of 1 listener', () => {
     const events: Event[] = [];
