@@ -1,4 +1,5 @@
 import EventEmitter from 'events';
+import { Socket } from 'socket.io';
 import { Event } from '../../types/event.types';
 
 type Error = {
@@ -12,7 +13,7 @@ type Error = {
  */
 class EventProcessor extends EventEmitter {
   private events: Event[];
-
+  private socket: Socket | undefined;
   /**
    * @param {Event[]} events User-defined events
    */
@@ -35,7 +36,7 @@ class EventProcessor extends EventEmitter {
     event
       .action()
       .then((data: any) => {
-        this.emit(event.name, data);
+        super.emit(event.name, data);
         setTimeout(() => this.processEvent(event), event.interval);
       })
       .catch((err) => this.emit('error', { event, err }));
@@ -45,20 +46,28 @@ class EventProcessor extends EventEmitter {
     this.setMaxListeners(this.events.length + 1);
 
     this.events.forEach((event) => {
-      this.on(event.name, (data: any) => {
-        // TODO: socket.io event
-        // console.log(data);
+      super.on(event.name, (data: any) => {
+        if (this.socket) this.socket.emit(event.name, data);
       });
     });
 
-    this.on('error', (data: Error) => {
-      // TODO: socket.io event, implement Logger
+    super.on('error', (data: Error) => {
+      // TODO: implement Logger
+      if (this.socket) this.socket.emit('error', data);
     });
   }
 
   setEvents(events: Event[]): void {
     this.events = events;
     this.restart();
+  }
+
+  setSocket(socket: Socket): void {
+    this.socket = socket;
+  }
+
+  getSocket(): Socket | undefined {
+    return this.socket;
   }
 
   getEvents(): Event[] {
