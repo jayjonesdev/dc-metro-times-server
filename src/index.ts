@@ -2,29 +2,33 @@ import 'dotenv/config';
 import express, { Application } from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
+import { randomUUID } from 'crypto';
 import EventProcessor from './libs/EventProcessor/EventProcessor.class';
 import railEvents from './events/rail.events';
-import { connect } from 'http2';
+import { Clients } from './types/event.types';
 
 const app: Application = express();
 const PORT = process.env.PORT || 5555;
 const httpServer = createServer(app);
-console.log(process.env.FRONTEND_URL);
+
 const io = new Server(httpServer, {
   cors: {
     origin: 'http://localhost:3000',
     methods: ['GET', 'POST'],
   },
 });
+const clients: Clients = {};
 
 let railEventProcessor: EventProcessor;
 
 io.on('connection', (socket) => {
-  // TODO: fix socket logic
-  if (!railEventProcessor.getSocket()) railEventProcessor.setSocket(socket);
-});
+  const id = randomUUID();
+  clients[id] = socket;
 
-io.on('disconnect', () => {});
+  socket.once('disconnect', () => delete clients[id]);
+
+  railEventProcessor.setClients(clients);
+});
 
 httpServer.listen(PORT, (): void => {
   console.log(`Server Running here 👉 http://localhost:${PORT}`);
