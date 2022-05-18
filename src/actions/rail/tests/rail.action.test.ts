@@ -33,7 +33,7 @@ describe('Rail Actions', () => {
     );
 
     mockFetchRealTimeRailPredictions().then((res) => {
-      expect(res).toEqual(mockedRealTimeRailPredictionsResponse.data);
+      expect(res).toEqual(mockedRealTimeRailPredictionsResponse.data.Trains);
     });
   });
 });

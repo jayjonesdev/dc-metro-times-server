@@ -1,5 +1,4 @@
 import EventEmitter from 'events';
-import { Socket } from 'socket.io';
 import { Clients, Event } from '../../types/event.types';
 
 type Error = {
@@ -40,7 +39,7 @@ class EventProcessor extends EventEmitter {
         super.emit(event.name, data);
         setTimeout(() => this.processEvent(event), event.interval);
       })
-      .catch((err) => this.emit('error', { event, err }));
+      .catch((err) => this.emit('error', { event: event.name, err }));
   }
 
   private setupEventReceivers(): void {
@@ -50,7 +49,7 @@ class EventProcessor extends EventEmitter {
       super.on(event.name, (data: any) => this.emitEvent(event.name, data));
     });
 
-    super.on('error', (error: Error) => {
+    super.on('error', (error) => {
       // TODO: implement Logger
       this.emitEvent('error', error);
     });
@@ -78,15 +77,15 @@ class EventProcessor extends EventEmitter {
   }
 
   start(): void {
-    if (this.eventNames().length === 0) this.processEvents();
+    if (super.eventNames().length === 0) this.processEvents();
   }
 
   stop(): void {
-    this.removeAllListeners();
+    super.removeAllListeners();
   }
 
   restart(): void {
-    this.removeAllListeners();
+    super.removeAllListeners();
     this.processEvents();
   }
 }

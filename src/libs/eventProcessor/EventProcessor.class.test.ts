@@ -1,55 +1,44 @@
-import { createServer, Server as HttpServer } from 'http';
+import { createServer } from 'http';
 import { Server, Socket } from 'socket.io';
-import { io } from 'socket.io-client';
+import { io, Socket as ClientSocket } from 'socket.io-client';
 import { Event } from '../../types/event.types';
 import EventProcessor from './EventProcessor.class';
 
 describe('EventProcessor', () => {
   let events: Event[] = [];
   let bool = false;
+  let ioServer: Server, serverSocket: Socket, clientSocket: ClientSocket;
   const eventProcessor = new EventProcessor(events);
-  // let ioServer: Server, serverSocket: Socket, httpServer: HttpServer;
 
-  // beforeAll((done) => {
-  //   httpServer = createServer();
-  //   ioServer = new Server(httpServer);
-  //   httpServer.listen(5555);
-  //   console.log(httpServer.address())
-  //   ioServer.on('connection', (socket) => {
-  //     console.log(socket);
-  //   });
-  //   done();
-  // });
-
-  // beforeEach((done) => {
-  //   const client = io('http://localhost:5555');
-  //   client.on('connect', () => {
-  //     console.log('connected');
-  //   });
-  //   done();
-  // });
-
-  // afterAll((done) => {
-  //   ioServer.close();
-  //   httpServer.close();
-  //   done();
-  // });
-
-  afterEach(() => {
-    eventProcessor.stop();
-    bool = false;
+  beforeAll((done) => {
+    const httpServer = createServer();
+    ioServer = new Server(httpServer);
+    httpServer.listen(5555, () => {
+      clientSocket = io(`http://localhost:${5555}`);
+      ioServer.on('connection', (socket: Socket) => {
+        serverSocket = socket;
+      });
+      clientSocket.on('connect', done);
+    });
   });
 
-  // it('has no socket attached', () => {
-  //   expect(eventProcessor.getSocket()).not.toBeUndefined;
-  // });
+  afterAll(() => {
+    ioServer.close();
+    clientSocket.close();
+  });
 
-  // it('has an attached socket', () => {
-  //   eventProcessor.setSocket(serverSocket);
-  //   const socket = eventProcessor.getSocket();
-  //   console.log('serverSocket', socket)
-  //   expect(socket).toBeUndefined;
-  // });
+  it('has no clients', () => {
+    expect(eventProcessor.getClients()).toStrictEqual({});
+  });
+
+  it('has clients', () => {
+    const clients = { '1': serverSocket };
+
+    eventProcessor.setClients(clients);
+    clientSocket.close();
+
+    expect(eventProcessor.getClients()).toStrictEqual(clients);
+  });
 
   it('has a max of 1 listener', () => {
     const events: Event[] = [];
@@ -98,14 +87,38 @@ describe('EventProcessor', () => {
       'event two',
       'error',
     ]);
+    eventProcessor.stop();
   });
 
-  it('has zero events', () => {
+  it('has 3 event listeners after start', () => {
+    eventProcessor.start();
+    expect(eventProcessor.eventNames().length).toEqual(3);
+  });
+
+  it('has 3 event listeners after restart', () => {
+    eventProcessor.restart();
+    expect(eventProcessor.eventNames().length).toEqual(3);
+  });
+
+  it('has zero event listeners after stop', () => {
+    eventProcessor.stop();
     expect(eventProcessor.eventNames().length).toEqual(0);
   });
 
-  it('has 3 events', () => {
-    eventProcessor.start();
-    expect(eventProcessor.eventNames().length).toEqual(3);
+  it('throws an error', () => {
+    events = [
+      {
+        name: 'error event',
+        interval: 60 * 1000,
+        action: () => new Promise((resolve, reject) => reject('error')),
+      },
+    ];
+    eventProcessor.setEvents(events);
+    eventProcessor.on('error', (error) => {
+      expect(error).toBeDefined;
+      expect(error['err']).toBe('error');
+      expect(error['event']).toBe('error event');
+      expect(eventProcessor.getEvents().length).toBe(1);
+    });
   });
 });

@@ -17,19 +17,21 @@ const mockedRailIncidentResponse = {
 };
 
 const mockedRealTimeRailPredictionsResponse = {
-  data: [
-    {
-      Car: '6',
-      Destination: 'Vienna',
-      DestinationCode: 'K08',
-      DestinationName: 'Vienna/Fairfax-GMU',
-      Group: '2',
-      Line: 'OR',
-      LocationCode: 'D03',
-      LocationName: "L'Enfant Plaza",
-      Min: '5',
-    },
-  ],
+  data: {
+    Trains: [
+      {
+        Car: '6',
+        Destination: 'Vienna',
+        DestinationCode: 'K08',
+        DestinationName: 'Vienna/Fairfax-GMU',
+        Group: '2',
+        Line: 'OR',
+        LocationCode: 'D03',
+        LocationName: "L'Enfant Plaza",
+        Min: '5',
+      },
+    ],
+  },
 };
 
 export { mockedRailIncidentResponse, mockedRealTimeRailPredictionsResponse };
