@@ -1,7 +1,7 @@
 import { createServer } from 'http';
 import { Server, Socket } from 'socket.io';
 import { io, Socket as ClientSocket } from 'socket.io-client';
-import { Event } from '../../types/event.types';
+import { Error, Event } from '../../types/event.types';
 import EventProcessor from './EventProcessor.class';
 
 describe('EventProcessor', () => {
@@ -114,10 +114,10 @@ describe('EventProcessor', () => {
       },
     ];
     eventProcessor.setEvents(events);
-    eventProcessor.on('error', (error) => {
+    eventProcessor.on('error', (error: Error) => {
       expect(error).toBeDefined;
-      expect(error['err']).toBe('error');
-      expect(error['event']).toBe('error event');
+      expect(error.err).toBe('error');
+      expect(error.event).toBe('error event');
       expect(eventProcessor.getEvents().length).toBe(1);
     });
   });

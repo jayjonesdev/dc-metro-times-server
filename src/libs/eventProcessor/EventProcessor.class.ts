@@ -1,11 +1,6 @@
 import EventEmitter from 'events';
 import { Clients, Event } from '../../types/event.types';
 
-type Error = {
-  event: Event;
-  err: any;
-};
-
 /**
  * @Class
  * Event Processor is used to process user-defined events and emit socket-io events.
@@ -49,7 +44,7 @@ class EventProcessor extends EventEmitter {
       super.on(event.name, (data: any) => this.emitEvent(event.name, data));
     });
 
-    super.on('error', (error) => {
+    super.on('error', (error: Error) => {
       // TODO: implement Logger
       this.emitEvent('error', error);
     });

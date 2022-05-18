@@ -7,3 +7,8 @@ export interface Event {
 }
 
 export type Clients = { [key: string]: Socket };
+
+export type Error = {
+  event: string;
+  err: any;
+};
