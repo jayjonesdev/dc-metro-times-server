@@ -19,7 +19,7 @@ describe('Rail Actions', () => {
     );
 
     mockFetchRailIncidents().then((res) => {
-      expect(res).toEqual(mockedRailIncidentResponse.data);
+      expect(res).toEqual(mockedRailIncidentResponse.data.Incidents);
     });
   });
 

@@ -8,6 +8,6 @@ const fetchRailIncidents = (): Promise<AxiosResponse<RailIncidentResponse>> =>
         api_key: process.env.WMATA_API_KEY as string,
       },
     })
-    .then((res) => res.data);
+    .then((res) => res.data.Incidents);
 
 export default fetchRailIncidents;
