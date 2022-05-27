@@ -5,12 +5,7 @@ export interface RailPredictionResponse {
 export type RailIncidentResponse = {
   IncidentID: string;
   Description: string;
-  StartLocationFullName: string | null;
-  EndLocationFullName: string | null;
-  PassengerDelay: 0;
-  DelaySeverity: string | null;
   IncidentType: string;
-  EmergencyText: string | null;
   LinesAffected: string;
   DateUpdated: string;
 }[];
