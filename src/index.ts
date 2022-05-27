@@ -6,6 +6,7 @@ import { randomUUID } from 'crypto';
 import EventProcessor from './libs/EventProcessor/EventProcessor.class';
 import railEvents from './events/rail.events';
 import { Clients } from './types/event.types';
+import apiRouter from './controllers';
 
 const app: Application = express();
 const PORT = process.env.PORT || 5555;
@@ -29,8 +30,13 @@ io.on('connection', (socket) => {
   railEventProcessor.setClients(clients);
 });
 
+app.use(apiRouter);
+
 httpServer.listen(PORT, (): void => {
   console.log(`Server Running here 👉 http://localhost:${PORT}`);
 
   railEventProcessor = new EventProcessor(railEvents);
+  // railEventProcessor.on('realtime', (data) => {
+  //   // console.log(data)
+  // })
 });
