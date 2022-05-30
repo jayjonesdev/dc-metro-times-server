@@ -13,11 +13,11 @@ import { Event } from '../types/event.types';
  */
 const railEvents: Event[] = [
   {
-    name: 'realtime',
+    name: 'rail/realtime',
     interval: 3 * 1000,
     action: fetchRealTimeRailPredictions,
   },
-  { name: 'incidents', interval: 60 * 1000, action: fetchRailIncidents },
+  { name: 'rail/incidents', interval: 60 * 1000, action: fetchRailIncidents },
 ];
 
 export default railEvents;

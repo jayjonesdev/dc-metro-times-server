@@ -3,6 +3,7 @@ import express, { Application } from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { randomUUID } from 'crypto';
+import cors from 'cors';
 import EventProcessor from './libs/EventProcessor/EventProcessor.class';
 import railEvents from './events/rail.events';
 import { Clients } from './types/event.types';
@@ -30,13 +31,11 @@ io.on('connection', (socket) => {
   railEventProcessor.setClients(clients);
 });
 
+app.use(cors());
 app.use(apiRouter);
 
 httpServer.listen(PORT, (): void => {
   console.log(`Server Running here 👉 http://localhost:${PORT}`);
 
   railEventProcessor = new EventProcessor(railEvents);
-  // railEventProcessor.on('realtime', (data) => {
-  //   // console.log(data)
-  // })
 });
