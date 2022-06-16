@@ -39,3 +39,5 @@ httpServer.listen(PORT, (): void => {
 
   railEventProcessor = new EventProcessor(railEvents);
 });
+
+export default httpServer;

@@ -13,8 +13,8 @@ describe('EventProcessor', () => {
   beforeAll((done) => {
     const httpServer = createServer();
     ioServer = new Server(httpServer);
-    httpServer.listen(5555, () => {
-      clientSocket = io(`http://localhost:${5555}`);
+    httpServer.listen(1234, () => {
+      clientSocket = io(`http://localhost:${1234}`);
       ioServer.on('connection', (socket: Socket) => {
         serverSocket = socket;
       });
