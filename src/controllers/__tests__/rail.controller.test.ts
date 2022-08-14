@@ -1,9 +1,13 @@
+import { Server } from 'http';
 import request from 'supertest';
-import httpServer from '../..';
+import init from '../..';
 import { isRailPrediction, isRailIncident } from '../../types/rail.types';
+
+let httpServer: Server;
 
 describe('GET /incidents', () => {
   beforeAll(() => {
+    httpServer = init(4321);
     if (!httpServer.address()) {
       httpServer.listen(4321);
     }
@@ -24,6 +28,7 @@ describe('GET /incidents', () => {
 
 describe('GET /realtime', () => {
   beforeAll(() => {
+    httpServer = init(4321);
     if (!httpServer.address()) {
       httpServer.listen(4321);
     }

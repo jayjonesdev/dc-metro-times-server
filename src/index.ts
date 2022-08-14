@@ -4,15 +4,22 @@ import { createServer } from 'http';
 import cors from 'cors';
 import apiRouter from './controllers';
 
-const app: Application = express();
 const PORT = process.env.PORT || 5555;
-const httpServer = createServer(app);
 
-app.use(cors());
-app.use(apiRouter);
+const init = (port: string | number) => {
+  const app: Application = express();
+  const httpServer = createServer(app);
 
-httpServer.listen(PORT, (): void => {
-  console.log(`Server Running here 👉 http://localhost:${PORT}`);
-});
+  app.use(cors());
+  app.use(apiRouter);
 
-export default httpServer;
+  httpServer.listen(port, (): void => {
+    console.log(`Server Running here 👉 http://localhost:${PORT}`);
+  });
+
+  return httpServer;
+};
+
+init(PORT);
+
+export default init;
