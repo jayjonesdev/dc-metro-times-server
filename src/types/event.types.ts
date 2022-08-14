@@ -3,8 +3,3 @@ export interface Event {
   interval: number;
   action: () => Promise<any>;
 }
-
-export type Error = {
-  event: string;
-  err: any;
-};
