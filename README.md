@@ -19,7 +19,6 @@ DC Metro Times is an app that allows you to view the schedules of buses and trai
 - Express
 - TypeScript
 - Axios
-- Socket.IO
 - Jest
 
 ## Setup
