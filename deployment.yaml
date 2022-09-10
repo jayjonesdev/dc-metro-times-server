@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dc-metro-times-server
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      project: dc-metro-times-server
+  template:
+    metadata:
+      labels:
+        project: dc-metro-times-server
+    spec: 
+      containers:
+      - name: dc-metro-times-server
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        image: dc-metro-times-server:latest

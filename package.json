@@ -6,7 +6,9 @@
   "scripts": {
     "start": "ts-node ./src/index.ts",
     "dev": "nodemon ./src/index.ts",
-    "test": "jest --watchAll --detectOpenHandles"
+    "test": "jest --watchAll --detectOpenHandles",
+    "docker:build": "docker build -t dc-metro-times-server .",
+    "docker:run": "docker run -d -p 7070:7070 dc-metro-times-server"
   },
   "repository": {
     "type": "git",
