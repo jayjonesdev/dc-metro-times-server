@@ -2,10 +2,10 @@
   "name": "dc-metro-times-server",
   "version": "0.0.3",
   "description": "HTTP server to fetch and push dc metro times to clients",
-  "main": "index.ts",
+  "main": "server.ts",
   "scripts": {
-    "start": "ts-node ./src/index.ts",
-    "dev": "nodemon ./src/index.ts",
+    "start": "ts-node ./src/server.ts",
+    "dev": "nodemon ./src/server.ts",
     "test": "jest --watchAll --detectOpenHandles",
     "docker:build": "docker build -t dc-metro-times-server .",
     "docker:run": "docker run -d -p 7070:7070 dc-metro-times-server"
